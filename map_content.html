@@ -30,10 +30,13 @@
             font-weight: bold;
             color: red;
             background: white;
-            padding: 2px 5px;
+            padding: 2px 8px;
             border-radius: 5px;
             border: 1px solid black;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -62,13 +65,13 @@
 
         // Locations with name and coordinates
         var locations = [
-            { lat: 5.569, lon: 100.754, name: "Flat Area" },
-            { lat: 5.570, lon: 100.753, name: "Hill 1" },
-            { lat: 5.571, lon: 100.756, name: "Hill 2" },
-            { lat: 5.571, lon: 100.759, name: "Hill 3" },
-            { lat: 5.572, lon: 100.761, name: "Hill 4" },
-            { lat: 5.568, lon: 100.761, name: "Hill 5" },
-            { lat: 5.567, lon: 100.756, name: "Hill 6" }
+            { lat: 5.569, lon: 100.754, name: "Hill 1" },
+            { lat: 5.570, lon: 100.753, name: "Hill 2" },
+            { lat: 5.571, lon: 100.756, name: "Hill 3" },
+            { lat: 5.571, lon: 100.759, name: "Hill 4" },
+            { lat: 5.572, lon: 100.761, name: "Hill 5" },
+            { lat: 5.568, lon: 100.761, name: "Hill 6" },
+            { lat: 5.567, lon: 100.756, name: "Flat Area" }
         ];
 
         locations.forEach(function(loc) {
@@ -76,11 +79,12 @@
 
             L.marker([loc.lat, loc.lon], { icon: customIcon }).addTo(map);
 
-            // Ensure label aligns on the same line
+            // Ensures label appears on the same line
             L.marker([loc.lat, loc.lon], {
                 icon: L.divIcon({
                     className: 'leaflet-label',
-                    html: `<span> ${loc.name} </span>` // Keeps "Hill" and number on the same line
+                    html: `<span style="display: inline-block;">${loc.name}</span>`, // Force inline
+                    iconSize: [60, 20]
                 })
             }).addTo(map);
         });
