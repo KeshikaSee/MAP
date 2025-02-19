@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
-        /* Ensure full screen layout without scrollbars */
+        /* Ensure full screen layout */
         html, body {
             margin: 0;
             padding: 0;
@@ -20,19 +20,20 @@
         }
 
         #map {
-            height: 100vh; /* Full height */
-            width: 100vw;  /* Full width */
+            height: 100vh;
+            width: 100vw;
         }
 
-        /* Label Styling */
+        /* Custom Label Styling */
         .leaflet-label {
             font-size: 14px;
             font-weight: bold;
             color: red;
-            text-shadow: -1px -1px 2px white,
-                         1px -1px 2px white,
-                        -1px  1px 2px white,
-                         1px  1px 2px white;
+            background: white;
+            padding: 2px 5px;
+            border-radius: 5px;
+            border: 1px solid black;
+            display: inline-block;
         }
     </style>
 </head>
@@ -41,7 +42,7 @@
     <div id="map"></div>
 
     <script>
-        var map = L.map('map'); // Initialize map without fixed center
+        var map = L.map('map'); // Initialize map without a fixed center
 
         // Array to store marker coordinates for fitBounds()
         var bounds = [];
@@ -59,6 +60,7 @@
             popupAnchor: [0, -35]
         });
 
+        // Locations with name and coordinates
         var locations = [
             { lat: 5.569, lon: 100.754, name: "Flat Area" },
             { lat: 5.570, lon: 100.753, name: "Hill 1" },
@@ -74,15 +76,16 @@
 
             L.marker([loc.lat, loc.lon], { icon: customIcon }).addTo(map);
 
+            // Ensure label aligns on the same line
             L.marker([loc.lat, loc.lon], {
                 icon: L.divIcon({
                     className: 'leaflet-label',
-                    html: loc.name
+                    html: `<span> ${loc.name} </span>` // Keeps "Hill" and number on the same line
                 })
             }).addTo(map);
         });
 
-        // Automatically fit the map to show all markers with padding
+        // Fit map to markers with padding
         map.fitBounds(bounds, { padding: [50, 50] });
 
     </script>
