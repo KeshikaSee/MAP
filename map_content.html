@@ -55,35 +55,46 @@
             attribution: 'Tiles &copy; Esri, Maxar, Earthstar Geographics'
         }).addTo(map);
 
-        // Custom marker icon using an absolute GitHub Pages URL
-        var customIcon = L.icon({
-            iconUrl: 'https://keshikasee.github.io/MAP/mypin.png', // Absolute path for GitHub Pages
+        // Define custom icons for hills and flat areas (using RAW GitHub links)
+        var hillIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/keshikasee/MAP/main/Hill.png',
             iconSize: [40, 40],
             iconAnchor: [20, 40],
             popupAnchor: [0, -35]
         });
 
-        // Locations with name and coordinates
+        var flatIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/keshikasee/MAP/main/Flat%20Area.png',
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [0, -35]
+        });
+
+        // Updated locations with a 'type' field
         var locations = [
-            { lat: 5.569, lon: 100.754, name: "Hill 1" },
-            { lat: 5.570, lon: 100.753, name: "Hill 2" },
-            { lat: 5.571, lon: 100.756, name: "Hill 3" },
-            { lat: 5.571, lon: 100.759, name: "Hill 4" },
-            { lat: 5.572, lon: 100.761, name: "Hill 5" },
-            { lat: 5.568, lon: 100.761, name: "Hill 6" },
-            { lat: 5.567, lon: 100.756, name: "Flat Area" }
+            { lat: 5.569, lon: 100.754, name: "Hill 1", type: "hill" },
+            { lat: 5.570, lon: 100.753, name: "Hill 2", type: "hill" },
+            { lat: 5.571, lon: 100.756, name: "Hill 3", type: "hill" },
+            { lat: 5.571, lon: 100.759, name: "Hill 4", type: "hill" },
+            { lat: 5.572, lon: 100.761, name: "Hill 5", type: "hill" },
+            { lat: 5.568, lon: 100.761, name: "Hill 6", type: "hill" },
+            { lat: 5.567, lon: 100.756, name: "Flat Area", type: "flat" }
         ];
 
         locations.forEach(function(loc) {
-            bounds.push([loc.lat, loc.lon]); // Add each marker position to bounds array
+            bounds.push([loc.lat, loc.lon]); // Add to bounds array
 
-            L.marker([loc.lat, loc.lon], { icon: customIcon }).addTo(map);
+            // Assign appropriate icon based on type
+            var selectedIcon = (loc.type === "hill") ? hillIcon : flatIcon;
 
-            // Ensures label appears on the same line
+            // Add marker with correct icon
+            L.marker([loc.lat, loc.lon], { icon: selectedIcon }).addTo(map);
+
+            // Label for locations
             L.marker([loc.lat, loc.lon], {
                 icon: L.divIcon({
                     className: 'leaflet-label',
-                    html: `<span style="display: inline-block;">${loc.name}</span>`, // Force inline
+                    html: `<span style="display: inline-block;">${loc.name}</span>`,
                     iconSize: [60, 20]
                 })
             }).addTo(map);
